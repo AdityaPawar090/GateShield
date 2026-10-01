@@ -1,131 +1,258 @@
-# APIShield
+# GateShield
 
+### Secure API Gateway & Observability Platform
 
-> **Full-Stack API Gateway, Security & Monitoring Platform**
+GateShield is a full-stack platform that provides a secure gateway layer between clients and backend services. It centralizes API access control, traffic management, request tracking, and service-performance monitoring in one place.
 
+Instead of allowing clients to communicate directly with individual backend services, GateShield acts as a controlled entry point where requests can be authenticated, rate-limited, logged, forwarded, and analyzed.
 
-APIShield is a full-stack API Gateway and monitoring platform designed to sit between clients and backend services. It provides API-key authentication, Redis-based rate limiting, request logging, gateway proxying, real-time monitoring, analytics, and an administrative dashboard.
+---
 
+## ✨ Why GateShield?
 
-## 🚀 Features
+Modern applications often have multiple backend services that need to be protected and monitored.
 
+GateShield provides a centralized layer for:
 
-- 🔐 JWT Authentication & Role-Based Authorization
-- 🔑 API-Key Authentication & Management
-- 🌐 API Gateway & Reverse Proxy
-- 🚦 Redis-Based Rate Limiting
-- 📝 Request Logging
-- 📊 Real-Time Dashboard
-- 📈 Advanced API Analytics
-- ⚡ Response-Time Monitoring
-- 📉 P50 / P95 / P99 Latency Analytics
-- 🔎 Endpoint & Service Performance Analytics
-- 🔥 Error & Status-Code Analytics
-- 👥 API-Key Usage Analytics
-- 📡 Live Gateway Monitoring
-- 🕐 Recent Request Monitoring
-- 🐳 Docker & Docker Compose Support
-- 🗄️ PostgreSQL + Prisma
-- ⚡ Redis for high-speed rate-limit state
+**Authenticate → Control → Route → Record → Analyze**
 
+This makes it easier to manage API traffic while gaining visibility into service health and performance.
 
-## 🏗️ Architecture
+---
 
+## 🚀 Core Capabilities
+
+### 🔐 Access & Security
+
+* JWT-based authentication
+* Role-based access control
+* API-key creation and management
+* Protected administrative routes
+* Secure handling of API credentials
+* Environment-based configuration for sensitive values
+
+### 🌐 API Gateway
+
+* Centralized API entry point
+* Reverse proxy support
+* Request forwarding to target services
+* Service-based gateway configuration
+* Controlled communication between clients and backend services
+
+### 🚦 Traffic Management
+
+* Redis-powered rate limiting
+* Per-API-key traffic control
+* Rate-limit violation tracking
+* Protection against excessive API requests
+
+### 📝 Request Observability
+
+* Request and response logging
+* HTTP status-code tracking
+* Endpoint-level monitoring
+* Service-level traffic information
+* Recent request inspection
+
+### 📊 Analytics & Monitoring
+
+GateShield provides an analytics layer for understanding API usage and performance.
+
+It tracks metrics such as:
+
+* Total requests
+* Successful requests
+* Failed requests
+* Error percentage
+* HTTP status-code distribution
+* Service traffic
+* API-key usage
+* Request latency
+* Recent gateway activity
+* Rate-limit activity
+
+### ⚡ Performance Metrics
+
+Response-time analysis includes:
+
+* Minimum latency
+* Average latency
+* P50 latency
+* P95 latency
+* P99 latency
+* Maximum latency
+
+These metrics help identify slow endpoints and performance bottlenecks.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+                    ┌──────────────────┐
+                    │      Client      │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                 ┌───────────────────────┐
+                 │     GateShield        │
+                 │     API Gateway       │
+                 ├───────────────────────┤
+                 │ Authentication        │
+                 │ API-Key Validation    │
+                 │ Rate Limiting         │
+                 │ Request Logging       │
+                 │ Request Routing       │
+                 └───────────┬───────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │   Target API    │
+                    │    Service      │
+                    └────────┬────────┘
+                             │
+                             ▼
+                  ┌──────────────────────┐
+                  │ PostgreSQL + Redis   │
+                  └──────────┬───────────┘
+                             │
+                             ▼
+                  ┌──────────────────────┐
+                  │ Dashboard & Analytics│
+                  └──────────────────────┘
+```
+
+---
+
+## 🔄 Request Flow
+
+A typical request passes through the gateway as follows:
 
 ```text
 Client
   │
   ▼
-┌─────────────────────────────┐
-│       APIShield Gateway     │
-│                             │
-│  API-Key Authentication     │
-│           ↓                 │
-│  Redis Rate Limiter         │
-│           ↓                 │
-│  Request Logger             │
-│           ↓                 │
-│  Gateway Proxy              │
-└──────────────┬──────────────┘
-               │
-               ▼
-        Target API Service
-               │
-        ┌──────┴──────┐
-        ▼             ▼
-   PostgreSQL       Redis
-        │             │
-        └──────┬──────┘
-               ▼
-      Dashboard / Analytics
-🔄 Request Lifecycle
-Client Request
-      ↓
-API-Key Authentication
-      ↓
-Redis Rate Limiting
-      ↓
+Authentication
+  │
+  ▼
+API-Key Validation
+  │
+  ▼
+Rate Limiting
+  │
+  ▼
 Request Logging
-      ↓
-Gateway Proxy
-      ↓
+  │
+  ▼
+Gateway Routing
+  │
+  ▼
 Target Service
-      ↓
+  │
+  ▼
 Response
-      ↓
-PostgreSQL / Redis
-      ↓
-Analytics & Dashboard
-🛠️ Tech Stack
-Layer	Technology
-Frontend	React + Vite
-Styling	Tailwind CSS
-Data Fetching	TanStack Query
-Backend	Node.js + Express.js
-ORM	Prisma
-Database	PostgreSQL
-Cache / Rate Limiting	Redis
-Authentication	JWT
-Infrastructure	Docker + Docker Compose
-Reverse Proxy	Nginx
-📊 Analytics
+  │
+  ▼
+Metrics & Logs
+  │
+  ▼
+Dashboard
+```
 
-APIShield provides:
+This centralized flow allows GateShield to enforce security and traffic policies before requests reach backend services.
 
-Total Requests
-Success Rate
-Error Rate
-Status-Code Distribution
-Service Traffic
-Top API Keys
-Daily Request Analytics
-Gateway Monitoring
-Rate-Limit Analytics
-Recent Requests
-Response-Time Analytics
-Endpoint Performance
-Service Performance
-API-Key Performance
-Response-Time Metrics
-Average
-Minimum
-P50
-P95
-P99
-Maximum
-🔌 Analytics API
-GET /api/v1/analytics/summary
-GET /api/v1/analytics/status-codes
-GET /api/v1/analytics/services
-GET /api/v1/analytics/top-api-keys
-GET /api/v1/analytics/response-times
-GET /api/v1/analytics/daily
-GET /api/v1/analytics/error-rate
-GET /api/v1/analytics/monitoring
-GET /api/v1/analytics/rate-limits
-GET /api/v1/analytics/recent-requests
-📁 Project Structure
-APIShield/
+---
+
+## 📈 Analytics
+
+The dashboard provides visibility into API activity and service performance.
+
+### Traffic Analytics
+
+```text
+Requests
+├── Total Requests
+├── Successful Requests
+├── Failed Requests
+├── Error Rate
+└── Status-Code Distribution
+```
+
+### Service Analytics
+
+```text
+Services
+├── Request Volume
+├── Endpoint Activity
+├── Response Performance
+└── Error Information
+```
+
+### API-Key Analytics
+
+```text
+API Keys
+├── Request Usage
+├── Traffic Distribution
+└── Rate-Limit Activity
+```
+
+### Latency Analytics
+
+```text
+Response Time
+├── Minimum
+├── Average
+├── P50
+├── P95
+├── P99
+└── Maximum
+```
+
+---
+
+## 🔌 Analytics Endpoints
+
+The backend exposes dedicated endpoints for dashboard analytics.
+
+| Endpoint                            | Purpose                   |
+| ----------------------------------- | ------------------------- |
+| `/api/v1/analytics/summary`         | Overall API activity      |
+| `/api/v1/analytics/status-codes`    | HTTP status distribution  |
+| `/api/v1/analytics/services`        | Service-level statistics  |
+| `/api/v1/analytics/top-api-keys`    | API-key usage             |
+| `/api/v1/analytics/response-times`  | Latency statistics        |
+| `/api/v1/analytics/daily`           | Daily traffic information |
+| `/api/v1/analytics/error-rate`      | Error-rate statistics     |
+| `/api/v1/analytics/monitoring`      | Gateway monitoring        |
+| `/api/v1/analytics/rate-limits`     | Rate-limit activity       |
+| `/api/v1/analytics/recent-requests` | Recent gateway requests   |
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer            | Technology             |
+| ---------------- | ---------------------- |
+| Frontend         | React, Vite            |
+| UI               | Tailwind CSS           |
+| Data Fetching    | TanStack Query         |
+| Backend          | Node.js, Express.js    |
+| Database         | PostgreSQL             |
+| ORM              | Prisma                 |
+| Cache            | Redis                  |
+| Authentication   | JWT                    |
+| Gateway          | Express-based Gateway  |
+| Reverse Proxy    | Nginx                  |
+| Containerization | Docker, Docker Compose |
+
+---
+
+## 📁 Project Structure
+
+```text
+GateShield/
+│
 ├── Backend/
 │   ├── middleware/
 │   │   ├── apiKey.middleware.js
@@ -150,143 +277,207 @@ APIShield/
 │
 ├── docker-compose.yml
 ├── Dockerfiles
-├── nginx configuration
+├── nginx/
 └── README.md
-⚙️ Getting Started
-Prerequisites
-Node.js
-npm
-PostgreSQL
-Redis
-Docker & Docker Compose
-Clone
-git clone <repository-url>
-cd APIShield
-Backend
+```
+
+---
+
+## ⚙️ Getting Started
+
+### Prerequisites
+
+Make sure the following are installed:
+
+* Node.js
+* npm
+* PostgreSQL
+* Redis
+* Docker
+* Docker Compose
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd GateShield
+```
+
+### 2. Configure the Backend
+
+```bash
 cd Backend
 npm install
-npm run dev
+```
 
-Configure the required environment variables before starting.
-
-Frontend
-cd Frontend
-npm install
-npm run dev
-
-The frontend uses Vite for development.
-
-Docker
-docker compose up --build
-🔐 Environment Variables
-
-Create your environment configuration using the project's required variables.
+Create the required environment configuration.
 
 Example:
 
+```env
 DATABASE_URL=
 REDIS_URL=
 JWT_SECRET=
 PORT=5000
 CORS_ORIGIN=
+```
 
-Never commit real secrets to GitHub.
+Do not commit real credentials or secrets to the repository.
 
-🧪 Testing
+### 3. Start the Backend
 
-APIShield should be tested across the complete lifecycle:
+```bash
+npm run dev
+```
 
-Authentication
-      ↓
-API Key
-      ↓
-Gateway
-      ↓
-Rate Limiting
-      ↓
-Request Logging
-      ↓
-Target Service
-      ↓
-Analytics
-      ↓
-Dashboard
+### 4. Start the Frontend
 
-Important scenarios include:
+Open another terminal:
 
-Valid and invalid authentication
-Valid and invalid API keys
-Successful gateway requests
-Failed requests
-Rate-limit violations
-429 Too Many Requests
-Request logging
-Analytics consistency
-Dashboard updates
-Live monitoring
-P95/P99 calculations
-Docker deployment
-🔒 Security
+```bash
+cd Frontend
+npm install
+npm run dev
+```
 
-APIShield follows several security practices:
+The Vite development server will provide the frontend URL in the terminal.
 
-JWT-protected routes
-Role-based authorization
-API-key authentication
-Redis-based rate limiting
-Safe API-key prefix display
-Environment-based secrets
-Prisma ORM for database access
-Controlled error responses
-No exposure of sensitive credentials
-🐳 Infrastructure
+---
 
-The application can be containerized using:
+## 🐳 Running with Docker
 
-PostgreSQL
-Redis
-APIShield Backend
-Frontend
-Nginx
+GateShield can also be started using Docker Compose.
 
-Docker provides a consistent development and deployment environment.
+```bash
+docker compose up --build
+```
 
-🚧 Future Improvements
+The containerized setup can include:
 
-Potential future enhancements include:
+```text
+┌─────────────────┐
+│     Nginx       │
+└────────┬────────┘
+         │
+ ┌───────┴────────┐
+ │                │
+ ▼                ▼
+Frontend        Backend
+                  │
+          ┌───────┴───────┐
+          ▼               ▼
+      PostgreSQL         Redis
+```
 
-Advanced date-range filtering
-Analytics export
-API performance alerts
-Error-rate alerts
-Latency alerts
-Historical rate-limit analytics
-Endpoint latency trends
-Automated E2E testing
-Production deployment automation
-📌 Project Status
+This provides a consistent environment for running the application and its supporting services.
 
-APIShield currently includes:
+---
 
-✅ API Gateway
-✅ Authentication
-✅ Authorization
-✅ API Keys
-✅ Redis Rate Limiting
-✅ Request Logging
-✅ PostgreSQL + Prisma
-✅ Analytics Backend
-✅ Dashboard
-✅ Analytics Page
-✅ Live Monitoring
-✅ P95 / P99 Analytics
-✅ Advanced Analytics
-✅ UI/UX Polish
-🔨 Final Testing & Production Validation
-🎯 Project Goal
+## 🔒 Security Design
 
-APIShield provides a centralized platform to:
+GateShield uses multiple layers of protection:
 
-Secure APIs → Control Traffic → Monitor Services → Analyze Performance
+* JWT-protected application routes
+* Role-based authorization
+* API-key authentication
+* Redis-based rate limiting
+* Environment-based secrets
+* Controlled API responses
+* ORM-based database access
+* Safe API-key representation
+* Separation of authentication and gateway responsibilities
 
-APIShield — Secure APIs. Control Traffic. Understand Performance.
+The gateway provides a centralized point where access and traffic policies can be enforced.
+
+---
+
+## 🧪 Testing Checklist
+
+Important scenarios to validate include:
+
+### Authentication
+
+* Valid login
+* Invalid credentials
+* Unauthorized requests
+* Role-based access restrictions
+
+### API Keys
+
+* Valid API key
+* Invalid API key
+* Missing API key
+* API-key usage tracking
+
+### Gateway
+
+* Successful proxy request
+* Invalid target service
+* Failed target request
+* Response forwarding
+
+### Rate Limiting
+
+* Requests within limit
+* Rate-limit threshold reached
+* `429 Too Many Requests`
+* Rate-limit analytics
+
+### Monitoring
+
+* Request logging
+* Status-code tracking
+* Error-rate calculation
+* Latency calculation
+* P95/P99 calculation
+* Dashboard data consistency
+
+---
+
+## 🔮 Future Enhancements
+
+Potential improvements include:
+
+* Custom analytics date ranges
+* Exportable analytics reports
+* Configurable API performance alerts
+* Latency threshold notifications
+* Error-rate alerts
+* Endpoint latency history
+* Advanced API-key quotas
+* Automated end-to-end testing
+* Production deployment workflows
+* Distributed gateway support
+
+---
+
+## 🎯 Project Objective
+
+GateShield is designed around four major goals:
+
+```text
+          ┌─────────────┐
+          │   Secure    │
+          │    APIs     │
+          └──────┬──────┘
+                 │
+                 ▼
+          ┌─────────────┐
+          │   Control   │
+          │   Traffic   │
+          └──────┬──────┘
+                 │
+                 ▼
+          ┌─────────────┐
+          │   Monitor   │
+          │   Services  │
+          └──────┬──────┘
+                 │
+                 ▼
+          ┌─────────────┐
+          │   Analyze   │
+          │ Performance │
+          └─────────────┘
+```
+
+**GateShield — Secure the gateway. Control the traffic. Observe the system.**
